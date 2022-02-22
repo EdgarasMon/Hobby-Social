@@ -15,11 +15,26 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { Link } from 'react-router-dom';
+import type {} from '@mui/lab/themeAugmentation';
+import Logout from '@mui/icons-material/Logout';
+import PersonAdd from '@mui/icons-material/PersonAdd';
+
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Login from '../routes/Login';
+import Register from '../routes/Register';
+import LoginIcon from '@mui/icons-material/Login';
+import PersonIcon from '@mui/icons-material/Person';
+
+<Router>
+	<Routes>
+		<Route path="/login" element={<Login />}></Route>
+		<Route path="/register" element={<Register />}></Route>
+	</Routes>
+</Router>;
 
 const Search = styled('div')(({ theme }) => ({
 	position: 'relative',
-	borderRadius: theme.shape.borderRadius,
+	borderRadius: 8,
 	backgroundColor: alpha(theme.palette.common.white, 0.15),
 	'&:hover': {
 		backgroundColor: alpha(theme.palette.common.white, 0.25),
@@ -87,7 +102,7 @@ const PrimarySearchAppBar = () => {
 		<Menu
 			anchorEl={anchorEl}
 			anchorOrigin={{
-				vertical: 'top',
+				vertical: 70,
 				horizontal: 'right',
 			}}
 			id={menuId}
@@ -99,8 +114,20 @@ const PrimarySearchAppBar = () => {
 			open={isMenuOpen}
 			onClose={handleMenuClose}
 		>
-			<MenuItem onClick={handleMenuClose}>Login</MenuItem>
-			<MenuItem onClick={handleMenuClose}>Register</MenuItem>
+			<MenuItem component="a" href="/profile" onClick={handleMenuClose}>
+				<PersonIcon fontSize="small" sx={{ pr: 1 }} />
+				Profile
+			</MenuItem>
+			<MenuItem component="a" href="/login" onClick={handleMenuClose}>
+				<LoginIcon fontSize="small" sx={{ pr: 1 }} />
+				Login
+			</MenuItem>
+			<MenuItem component="a" href="/register" onClick={handleMenuClose}>
+				<PersonAdd fontSize="small" sx={{ pr: 1 }} /> Register
+			</MenuItem>
+			<MenuItem component="a" href="/login" onClick={handleMenuClose}>
+				<Logout fontSize="small" sx={{ pr: 1 }} /> Logout
+			</MenuItem>
 		</Menu>
 	);
 
@@ -162,24 +189,21 @@ const PrimarySearchAppBar = () => {
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static">
+			<AppBar position="static" sx={{ borderRadius: 8 }}>
 				<Toolbar>
-					<IconButton
-						size="large"
-						edge="start"
-						color="inherit"
-						aria-label="open drawer"
-						sx={{ mr: 2 }}
-					>
-						<MenuIcon />
-					</IconButton>
+					<LoginIcon fontSize="large" sx={{ pr: 6 }} />
+
+					{/* <a href="/login" />
+						<Link to="/login"></Link>
+					</LoginIcon> */}
+
 					<Typography
 						variant="h6"
 						noWrap
 						component="div"
 						sx={{ display: { xs: 'none', sm: 'block' } }}
 					>
-						HS
+						Hobby
 					</Typography>
 					<Search>
 						<SearchIconWrapper>
@@ -194,19 +218,19 @@ const PrimarySearchAppBar = () => {
 					<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 						<IconButton
 							size="large"
-							aria-label="show 4 new mails"
+							aria-label="show 0 new mails"
 							color="inherit"
 						>
-							<Badge badgeContent={4} color="error">
+							<Badge badgeContent={0} color="error">
 								<MailIcon />
 							</Badge>
 						</IconButton>
 						<IconButton
 							size="large"
-							aria-label="show 17 new notifications"
+							aria-label="show 0 new notifications"
 							color="inherit"
 						>
-							<Badge badgeContent={17} color="error">
+							<Badge badgeContent={0} color="error">
 								<NotificationsIcon />
 							</Badge>
 						</IconButton>
