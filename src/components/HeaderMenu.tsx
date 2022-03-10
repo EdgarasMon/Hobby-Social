@@ -18,8 +18,7 @@ import type {} from '@mui/lab/themeAugmentation';
 import Logout from '@mui/icons-material/Logout';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import App from '../App';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from '../routes/Login';
 import Register from '../routes/Register';
 import Profile from '../routes/Profile';

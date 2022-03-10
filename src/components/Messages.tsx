@@ -1,72 +1,109 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
+import { Global } from '@emotion/react';
+import { styled } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { grey } from '@mui/material/colors';
 import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
+import Typography from '@mui/material/Typography';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
-type Anchor = 'right';
+const drawerBleeding = 50;
 
-export default function TemporaryDrawer() {
-	const [state, setState] = React.useState({
-		right: true,
-	});
+interface Props {
+	/**
+	 * Injected by the documentation to work in an iframe.
+	 * You won't need it on your project.
+	 */
+	window?: () => Window;
+}
 
-	const toggleDrawer =
-		(anchor: Anchor, open: boolean) =>
-		(event: React.KeyboardEvent | React.MouseEvent) => {
-			if (
-				event.type === 'keydown' &&
-				((event as React.KeyboardEvent).key === 'Tab' ||
-					(event as React.KeyboardEvent).key === 'Shift')
-			) {
-				return;
-			}
+const Root = styled('div')(({ theme }) => ({
+	height: '100%',
+	backgroundColor: 'white',
+}));
 
-			setState({ ...state, [anchor]: open });
-		};
+const StyledBox = styled(Box)(({ theme }) => ({
+	backgroundColor: theme.palette.mode === 'light' ? '#fff' : grey[800],
+}));
 
-	const list = (anchor: Anchor) => (
-		<Box
-			sx={{
-				width: 250,
-			}}
-			role="presentation"
-			onClick={toggleDrawer(anchor, false)}
-			onKeyDown={toggleDrawer(anchor, false)}
-		>
-			<List>
-				{['Messages', 'Starred', 'Send email'].map((text, index) => (
-					<ListItem button key={text}>
-						<ListItemIcon>
-							{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-						</ListItemIcon>
-						<ListItemText primary={text} />
-					</ListItem>
-				))}
-			</List>
-			<Divider />
-		</Box>
-	);
+const Puller = styled(Box)(({ theme }) => ({
+	width: 30,
+	height: 10,
+	backgroundColor: theme.palette.mode === 'light' ? grey[300] : grey[900],
+	borderRadius: 3,
+	position: 'absolute',
+	top: 6,
+	left: 'calc(50% - 15px)',
+}));
+
+export default function SwipeableEdgeDrawer(props: Props) {
+	const { window } = props;
+	const [open, setOpen] = React.useState(false);
+
+	const toggleDrawer = (newOpen: boolean) => () => {
+		setOpen(newOpen);
+	};
+
+	// This is used only for the example
+	const container =
+		window !== undefined ? () => window().document.body : undefined;
 
 	return (
-		<div>
-			{(['right'] as const).map(anchor => (
-				<React.Fragment key={anchor}>
-					<Drawer
-						anchor={anchor}
-						open={state[anchor]}
-						onClose={toggleDrawer(anchor, false)}
-					>
-						{list(anchor)}
-					</Drawer>
-				</React.Fragment>
-			))}
-		</div>
+		<Root>
+			<CssBaseline />
+			<Global
+				styles={{
+					'.MuiDrawer-root > .MuiPaper-root': {
+						height: `calc(90% - ${drawerBleeding}px)`,
+						width: `calc(25% - ${drawerBleeding}px)`,
+						overflow: 'visible',
+					},
+				}}
+			/>
+			<Box sx={{ textAlign: 'right', pt: 1 }}>
+				<Button onClick={toggleDrawer(true)}>Messages</Button>
+			</Box>
+			<SwipeableDrawer
+				container={container}
+				anchor="bottom"
+				open={open}
+				onClose={toggleDrawer(false)}
+				onOpen={toggleDrawer(true)}
+				swipeAreaWidth={drawerBleeding}
+				disableSwipeToOpen={false}
+				ModalProps={{
+					keepMounted: true,
+				}}
+			>
+				<StyledBox
+					sx={{
+						position: 'absolute',
+						top: -drawerBleeding,
+						borderTopLeftRadius: 8,
+						borderTopRightRadius: 8,
+						visibility: 'visible',
+						right: 0,
+						left: 0,
+					}}
+				>
+					<Puller />
+					<Typography sx={{ p: 2, color: 'text.secondary' }}>
+						5 new messages
+					</Typography>
+				</StyledBox>
+				<StyledBox
+					sx={{
+						px: 2,
+						pb: 2,
+						height: '100%',
+						overflow: 'auto',
+					}}
+				>
+					<Skeleton variant="rectangular" height="100%" />
+				</StyledBox>
+			</SwipeableDrawer>
+		</Root>
 	);
 }

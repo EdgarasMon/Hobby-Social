@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 
@@ -294,38 +293,45 @@ export default function MediaCard() {
 			sx={{
 				display: 'flex',
 				justifyContent: 'center',
-				alignItems: 'center',
 				alignSelf: 'center',
-				flexDirection: 'column',
+				flexDirection: 'row',
+				flexWrap: 'wrap',
+				alignItems: 'flex-start',
 			}}
 		>
-			<Card
+			<Box
 				sx={{
-					maxWidth: 500,
 					display: 'flex',
 					justifyContent: 'center',
 					alignItems: 'center',
 					alignSelf: 'center',
 					flexDirection: 'column',
-					pt: 2,
 				}}
 			>
-				<CardMedia
-					component="img"
-					height="200"
-					image=""
-					alt="cover photo"
-				/>
-				<CardContent></CardContent>
-				<CardActions>
-					<Button size="small">
-						<AddAPhotoIcon />
-					</Button>
-					<Button size="small">
-						<DeleteIcon />
-					</Button>
-				</CardActions>
-			</Card>
+				<Card>
+					<CardMedia
+						sx={{
+							display: 'flex',
+							justifyContent: 'center',
+						}}
+						component="img"
+						height="200"
+						image=""
+						alt="cover photo"
+						width="200"
+					/>
+					{/* <CardContent></CardContent> */}
+					<CardActions>
+						<Button size="small">
+							<AddAPhotoIcon />
+						</Button>
+						<Button size="small">
+							<DeleteIcon />
+						</Button>
+					</CardActions>
+				</Card>
+			</Box>
+
 			<Box
 				sx={{
 					display: 'flex',
@@ -340,7 +346,7 @@ export default function MediaCard() {
 					}}
 					id="outlined-multiline-static"
 					multiline
-					rows={2}
+					rows={3}
 					placeholder="About yourself"
 				/>
 				<Button>
@@ -348,8 +354,14 @@ export default function MediaCard() {
 				</Button>
 			</Box>
 
-			<Box>
-				<Typography variant="inherit" color="initial">
+			<Box
+				sx={{
+					display: 'flex',
+					alignItems: 'center',
+					flexDirection: 'column',
+				}}
+			>
+				<Typography variant="body1">
 					Add your Hobbies from the list below :
 				</Typography>
 				<Box
@@ -361,13 +373,11 @@ export default function MediaCard() {
 						flexDirection: 'row',
 					}}
 				>
-					<FormControl sx={{ m: 1, width: 300 }}>
-						<InputLabel id="demo-multiple-checkbox-label">
-							✓
-						</InputLabel>
+					<FormControl sx={{ m: 1, minWidth: 300 }}>
+						<InputLabel id="multiple-checkbox-label">✓</InputLabel>
 						<Select
-							labelId="demo-multiple-checkbox-label"
-							id="demo-multiple-checkbox"
+							labelId="multiple-checkbox-label"
+							id="multiple-checkbox"
 							multiple
 							value={personName}
 							onChange={handleChange}
@@ -391,8 +401,14 @@ export default function MediaCard() {
 				</Box>
 			</Box>
 
-			<Box>
-				<Typography variant="inherit" color="initial">
+			<Box
+				sx={{
+					display: 'flex',
+					alignItems: 'center',
+					flexDirection: 'column',
+				}}
+			>
+				<Typography variant="body1">
 					Can' find your Hobby? write below :
 				</Typography>
 				<Box
@@ -406,10 +422,6 @@ export default function MediaCard() {
 				>
 					<FormControl sx={{ m: 1, width: 300 }}>
 						<TextField
-							sx={{
-								p: 2,
-								width: 300,
-							}}
 							id="outlined-multiline-static"
 							rows={1}
 							placeholder="Add Hobby"
